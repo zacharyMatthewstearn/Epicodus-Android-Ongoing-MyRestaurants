@@ -3,7 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.epicodus.myrestaurants.RestaurantsActivity">
+    tools:context=".ui.RestaurantsActivity">
 
     <TextView
         android:layout_width="match_parent"
@@ -19,12 +19,9 @@
         android:background="@color/colorDivider"
         android:gravity="center_horizontal" />
 
-    <ListView
+    <android.support.v7.widget.RecyclerView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/listView"
-        android:layout_below="@+id/locationTextView"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true"
-        />
+        android:layout_height="match_parent"
+        android:id="@+id/recyclerView"
+        android:layout_below="@+id/locationTextView"/>
 </RelativeLayout>
