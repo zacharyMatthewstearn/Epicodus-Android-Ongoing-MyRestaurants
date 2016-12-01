@@ -1,8 +1,11 @@
 package com.epicodus.myrestaurants.ui;
 
 
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,10 +21,11 @@ import org.parceler.Parcels;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 
-/**
- * A simple {@link Fragment} subclass.
- */
-public class RestaurantDetailFragment extends Fragment {
+public class RestaurantDetailFragment extends Fragment implements View.OnClickListener{
+    private static final int MAX_WIDTH = 400;
+    private static final int MAX_HEIGHT = 300;
+    private static final String TAG = RestaurantDetailFragment.class.getSimpleName();
+
     @Bind(R.id.restaurantImageView) ImageView mImageLabel;
     @Bind(R.id.restaurantNameTextView) TextView mNameLabel;
     @Bind(R.id.cuisineTextView) TextView mCategoriesLabel;
@@ -54,15 +58,43 @@ public class RestaurantDetailFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_restaurant_detail, container, false);
         ButterKnife.bind(this, view);
 
-        Picasso.with(view.getContext()).load(mRestaurant.getImageUrl()).into(mImageLabel);
+        Picasso.with(view.getContext()).load(mRestaurant.getImageUrl()).resize(MAX_WIDTH, MAX_HEIGHT).centerCrop().into(mImageLabel);
 
         mNameLabel.setText(mRestaurant.getName());
         mCategoriesLabel.setText(android.text.TextUtils.join(", ", mRestaurant.getCategories()));
         mRatingLabel.setText(Double.toString(mRestaurant.getRating()) + "/5");
         mPhoneLabel.setText(mRestaurant.getPhone());
         mAddressLabel.setText(android.text.TextUtils.join(", ", mRestaurant.getAddress()));
-
+        mWebsiteLabel.setText(mRestaurant.getWebsite());
+        mWebsiteLabel.setOnClickListener(this);
+        mPhoneLabel.setOnClickListener(this);
+        mAddressLabel.setOnClickListener(this);
         return view;
     }
 
+    @Override
+    public void onClick(View v) {
+         switch (v.getId()) {
+             case R.id.websiteTextView:
+                 Intent webIntent = new Intent(Intent.ACTION_VIEW,
+                         Uri.parse(mRestaurant.getWebsite()));
+                 startActivity(webIntent);
+                 break;
+             case R.id.phoneTextView:
+                 Intent phoneIntent = new Intent(Intent.ACTION_DIAL,
+                         Uri.parse("tel:" + mRestaurant.getPhone()));
+                 startActivity(phoneIntent);
+                 break;
+             case R.id.addressTextView:
+                 Intent mapIntent = new Intent(Intent.ACTION_VIEW,
+                         Uri.parse("geo:" + mRestaurant.getLatitude()
+                                 + "," + mRestaurant.getLongitude()
+                                 + "?q=(" + mRestaurant.getName() + ")"));
+                 startActivity(mapIntent);
+                 break;
+             default:
+                 Log.i(TAG, "onClick: Nothing Happens");
+                 break;
+         }
+    }
 }
