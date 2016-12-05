@@ -8,7 +8,7 @@
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="New Text"
+        android:text="Saved Restaurants"
         android:id="@+id/locationTextView"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
